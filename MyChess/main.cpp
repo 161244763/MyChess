@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "Board.h"
+#include "board.h"
 
 int main(int argc,char* argv[]){
     QApplication app(argc,argv);
