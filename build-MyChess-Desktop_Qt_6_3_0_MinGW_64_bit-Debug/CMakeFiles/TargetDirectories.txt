@@ -1,5 +1,0 @@
-E:/MyChess/build-MyChess-Desktop_Qt_6_3_0_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
-E:/MyChess/build-MyChess-Desktop_Qt_6_3_0_MinGW_64_bit-Debug/CMakeFiles/MyChess.dir
-E:/MyChess/build-MyChess-Desktop_Qt_6_3_0_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
-E:/MyChess/build-MyChess-Desktop_Qt_6_3_0_MinGW_64_bit-Debug/CMakeFiles/MyChess_autogen_timestamp_deps.dir
-E:/MyChess/build-MyChess-Desktop_Qt_6_3_0_MinGW_64_bit-Debug/CMakeFiles/MyChess_autogen.dir
