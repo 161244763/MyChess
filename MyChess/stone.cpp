@@ -1,7 +1,7 @@
 #include "stone.h"
 
-int board[15][15];//ȫ�ֹ�������,Ĭ��colorΪ0��row��1-5��colorΪ1��row��6-10
-int last_board[15][15];//ȫ�ֹ�����ʷ��һ����
+int board[15][15];//全局共用棋盘,默认color为0的row从1-5，color为1的row在6-10
+int last_board[15][15];//全局共用历史上一棋盘
 
     Stone::Stone()
 	{
@@ -14,7 +14,7 @@ int last_board[15][15];//ȫ�ֹ�����ʷ��һ����
 		over_river = false;
 	}
 
-    Stone::Stone(int ID) //��ʼ�������У��У��������ͣ���ɫ������
+    Stone::Stone(int ID) //初始化传参行，列，棋子类型，颜色，编号
 	{
 		is_dead = false;
 		over_river = false;
@@ -332,7 +332,7 @@ int last_board[15][15];//ȫ�ֹ�����ʷ��һ����
                             }
                             if (type == MA) {
                                 if (check_pos(row + 1, column + 2))
-                                    if (!board[row][column + 1])//
+                                    if (!board[row][column + 1])//马拐脚
                                         set_move(row + 1, column + 2);
                                 if (check_pos(row + 1, column - 2))
                                     if (!board[row][column - 1])
@@ -419,7 +419,7 @@ int last_board[15][15];//ȫ�ֹ�����ʷ��һ����
                             }
                             if (type == JIANG)
                             {
-                                //��
+                                //王不见王没有实现
                                 if (side == BLACK)
                                 {
                                     if (check_pos(row + 1, column) && row + 1 < 3)
