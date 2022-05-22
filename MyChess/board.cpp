@@ -6,12 +6,15 @@
 Board::Board(QWidget *parent)
     : QWidget{parent}
 {
-    for(int i = 0;i<32;i++){
+    for(int i = 0;i<32;i++)
+    {
         stones[i] = new Stone(i);
     }
 }
 
-Board::~Board(){}
+Board::~Board()
+{
+}
 
 void Board::paintEvent(QPaintEvent *event)
 {
@@ -23,9 +26,12 @@ void Board::paintEvent(QPaintEvent *event)
     bHeight = boardImg.height();
     wWidth = this->width();
     wHeight = this->height();
-    wScale = wHeight / wWidth;      //窗口长宽比
-    bScale = bHeight / bWidth;      //棋盘图片长宽比
-    left = 30,top = 30;           //距左上角距离
+    //窗口长宽比
+    wScale = wHeight / wWidth;   
+    //棋盘图片长宽比
+    bScale = bHeight / bWidth;   
+    //距左上角距离
+    left = 30,top = 30;           
     if(wScale>bScale){
         bWidth = wWidth - 60;
         bHeight = bWidth * bScale;
@@ -36,8 +42,10 @@ void Board::paintEvent(QPaintEvent *event)
         left = (wWidth - bWidth)/2;
     }
 
-    gHeight = bHeight*72/725;      //格子高度
-    gbHeight = (bHeight-gHeight*9)/2;    //边缘高度
+    //格子高度
+    gHeight = bHeight*72/725;   
+    //边缘高度
+    gbHeight = (bHeight-gHeight*9)/2;    
     gbWidth = (bWidth-gHeight*8)/2;
 
     p.drawPixmap(left, top, bWidth, bHeight, boardImg);
@@ -45,7 +53,8 @@ void Board::paintEvent(QPaintEvent *event)
 
 
 //    //绘制棋子
-//    float sScale = bWidth / boardImg.width();     //棋子缩放比例
+      //棋子缩放比例
+//    float sScale = bWidth / boardImg.width();     
 //    float space = 57 * sScale;
 //    qDebug()<<sScale;
 //    qDebug()<<space;
