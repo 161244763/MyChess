@@ -16,31 +16,38 @@ public:
     ~Stone();
 
     TYPE getType();
+
     SIDE getSide();
+
     int getId();
+
     bool getDead();
     void setDead(bool situation);
-    bool getRiver();
 
+    bool getRiver();
     void setRiver(bool situation);
 
     int getRow();
-
     void setRow(int X);
 
     int getColumn();
-
     void setColumn(int Y);
 
+    //移动棋子位置
     void move_to(int X, int Y);
 
+    //确定该位置是否属于棋盘
     bool check_pos(int X, int Y);
 
+    //确定棋盘上的某位置是否可以行棋
     int get_move(int X, int Y) ;
-
+    //改变棋盘上可行棋的位置
     void set_move(int X, int Y);
 
+    //各类型棋子的行棋方式
     void build_move();
+
+    //获取各棋子的图片路径
     QString getFilePath();
 
 private:

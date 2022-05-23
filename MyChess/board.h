@@ -14,10 +14,9 @@ public:
     
     //绘制棋子
     void drawStone(QPainter &p);
-    void drawStone(QPainter& painter,int id);
+
     //绘制事件
     void paintEvent(QPaintEvent *event);
-//    void drawStone(QPainter& p,int id);
 
     //返回棋盘行列对应的像素坐标
     QPoint center(int id);
@@ -29,20 +28,26 @@ public:
     //鼠标点击位置
     void click(QPoint pt);
     void click(int id, int row, int col);
+
     //根据鼠标点击位置确认所在点是否有棋子
     bool getClickRowCol(QPoint pt,int& row ,int& col);
+
     //鼠标点击事件
     void mouseReleaseEvent(QMouseEvent *);
 
 private:
     //储存棋盘上棋子对象
     Stone* stones[32];
+
     //被鼠标选中（第一次鼠标事件）的棋子id
     int _selectedID = -1;
+
     //被鼠标选中（第二次鼠标事件）的棋子id
     int _clickedID = -1;
+
     //bool类型储存下棋轮次
     bool _redTurn = true;
+
     float left;
     float top;
     float bWidth ;

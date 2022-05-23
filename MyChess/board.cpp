@@ -27,11 +27,11 @@ void Board::paintEvent(QPaintEvent *event)
     wWidth = this->width();
     wHeight = this->height();
     //窗口长宽比
-    wScale = wHeight / wWidth;   
+    wScale = wHeight / wWidth;
     //棋盘图片长宽比
-    bScale = bHeight / bWidth;   
+    bScale = bHeight / bWidth;
     //距左上角距离
-    left = 30,top = 30;           
+    left = 30,top = 30;
     if(wScale>bScale){
         bWidth = wWidth - 60;
         bHeight = bWidth * bScale;
@@ -41,61 +41,40 @@ void Board::paintEvent(QPaintEvent *event)
         bWidth = bHeight / bScale;
         left = (wWidth - bWidth)/2;
     }
-
+    
     //格子高度
-    gHeight = bHeight*72/725;   
+    gHeight = bHeight*72/725;
     //边缘高度
-    gbHeight = (bHeight-gHeight*9)/2;    
+    gbHeight = (bHeight-gHeight*9)/2;
     gbWidth = (bWidth-gHeight*8)/2;
-
+    
     p.drawPixmap(left, top, bWidth, bHeight, boardImg);
     drawStone(p);
-
-
-//    //绘制棋子
-      //棋子缩放比例
-//    float sScale = bWidth / boardImg.width();     
-//    float space = 57 * sScale;
-//    qDebug()<<sScale;
-//    qDebug()<<space;
-//    for(int i=0;i<32;i++){
-//        float sLeft = 40 + 57 * stones[i]->getColumn();
-//        float sTop = 40 + 57 * stones[i]->getRow();
-//        p.drawPixmap(sLeft, sTop, 60 , 60 , QPixmap(stones[i]->getFilePath()));
-//        qDebug()<<sLeft;
-//        qDebug()<<sTop;
-//    }
 }
 
 void Board::drawStone(QPainter& p)
 {
-    for(int i=0; i<32; i++)
+    for(int i=0;i<32;i++)
     {
-        drawStone(p, i);
-    }
-}
-
-void Board::drawStone(QPainter& p,int id )
-{
-        for(int i=0;i<32;i++)
+        //棋子没有死亡时进行绘制
+        if(!stones[i]->getDead())
         {
-            if(!stones[i]->getDead())
+            float sLeft = left + gbHeight  + gHeight * stones[i]->getColumn();
+            float sTop =  top + gbWidth + gHeight * stones[i]->getRow();
+            //区分选中和未被选中的棋子
+            if(i == _selectedID)
             {
-                float sLeft = left + gbHeight  + gHeight * stones[i]->getColumn();
-                float sTop =  top + gbWidth + gHeight * stones[i]->getRow();
-                if(i == _selectedID)
-                {
-                    p.drawPixmap(sLeft-30, sTop-30, 70 , 70 , QPixmap(stones[i]->getFilePath()));
-                }
-                else
-                {
-                    p.drawPixmap(sLeft-30, sTop-30, 60 , 60 , QPixmap(stones[i]->getFilePath()));
-                }
+                p.drawPixmap(sLeft-30, sTop-30, 70 , 70 , QPixmap(stones[i]->getFilePath()));
             }
-
-//            qDebug()<<sLeft;
-//            qDebug()<<sTop;
+            else
+            {
+                p.drawPixmap(sLeft-30, sTop-30, 60 , 60 , QPixmap(stones[i]->getFilePath()));
+            }
         }
+        
+        //            qDebug()<<sLeft;
+        //            qDebug()<<sTop;
+    }
 }
 
 void Board::set_redTurn()
@@ -147,7 +126,8 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
     }
     for(i = 0;i<32;i++)
     {
-        if(stones[i]->getRow() == row && stones[i]->getColumn() == col && stones[i]->getDead() == false)
+        //选中某个没被吃掉的棋子 则将其ID设为clickedID
+        if(stones[i]->getRow() == row && stones[i]->getColumn() == col && !stones[i]->getDead())
         {
             qDebug()<<i;
             break;
@@ -164,22 +144,24 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
             _clickedID = -1;
         }
     }
+    //当前没有棋子被选中
     if(_selectedID == -1)
     {
+        //选中当前行棋方的某一棋子则重绘
         if((_clickedID != -1) && ((_redTurn&&(_clickedID >= 16))||(!_redTurn&&(_clickedID < 16))))
         {
             _selectedID = _clickedID;
             update();
         }
-
     }
-
+    //当前已有棋子被选中 则对第二次点击的位置进行分类
     else
     {
         for(int i = 0;i <32 ; i++)
         {
             stones[i]->build_move();
         }
+        //已选中的棋子可以移动
         if(stones[_selectedID]->get_move(row,col) == 1)
         {
             stones[_selectedID]->move_to(row,col);
@@ -187,6 +169,7 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
             _selectedID = -1;
             set_redTurn();
         }
+        //已选中的棋子可以吃该位置的棋子
         else if(stones[_selectedID]->get_move(row,col) == 2)
         {
             //stones[_selectedID]->setRow(row);
@@ -197,10 +180,11 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
                 stones[_clickedID]->setDead(true);
             }
             update();
-
+            
             _selectedID = -1;
             set_redTurn();
         }
+        //选中不可移动的位置
         else if(stones[_selectedID]->get_move(row,col) == 0)
         {
             _selectedID = -1;
