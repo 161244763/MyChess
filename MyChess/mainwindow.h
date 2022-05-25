@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+//绘制主菜单界面
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
