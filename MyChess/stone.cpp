@@ -150,6 +150,21 @@ void Stone::setColumn(int Y)
     column = Y;
 }
 
+//悔棋功能
+void Stone::reset_board()
+{
+    for(int i=0;i<15;++i)
+        for(int j=0;j<15;++j)
+            board[i][j]=0;
+}
+
+void Stone::reset_move()
+{
+    for(int i=0;i<15;++i)
+        for(int j=0;j<15;++j)
+            board[i][j]=last_board[i][j];
+}
+
 //移动棋子
 void Stone::move_to(int X, int Y)
 {
@@ -189,13 +204,6 @@ void Stone::set_move(int X, int Y)
         move[X][Y] = 2;
 }
 
-//悔棋功能
-void Stone::reset_move()
-{
-    for(int i=0;i<15;++i)
-        for(int j=0;j<15;++j)
-            board[i][j]=last_board[i][j];
-}
 
 //棋子行棋规则
 void Stone::build_move()
