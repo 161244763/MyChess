@@ -14,7 +14,8 @@ Stone::Stone()
     over_river = false;
 }
 
-Stone::Stone(int ID) //初始化传参行，列，棋子类型，颜色，编号
+//初始化传参行，列，棋子类型，颜色，编号
+Stone::Stone(int ID) 
 {
     is_dead = false;
     over_river = false;
@@ -74,48 +75,58 @@ Stone::Stone(int ID) //初始化传参行，列，棋子类型，颜色，编号
 
 Stone::~Stone()
 {
+    
 }
 
+//返回棋子类型
 Stone::TYPE Stone::getType()
 {
     return type;
 }
 
+//返回红方或黑方
 Stone::SIDE Stone::getSide()
 {
     return side;
 }
 
+//返回棋子位置
 int Stone::getId()
 {
     return id;
 }
 
+//判断棋子是否死亡
 bool Stone::getDead()
 {
     return is_dead;
 }
 
+//设定判断棋子死亡规则
 void Stone::setDead(bool situation)
 {
     is_dead = situation;
 }
 
+//判断棋子是否过河
 bool Stone::getRiver()
 {
     return over_river;
 }
 
+//设定判断棋子过河规则
 void Stone::setRiver(bool situation)
 {
     over_river = situation;
 }
 
+//返回棋子所在行
 int Stone::getRow()
 {
     return row;
 }
 
+//设置棋子所在行
 void Stone::setRow(int X)
 {
     row = X;
@@ -125,16 +136,19 @@ void Stone::setRow(int X)
         setRiver(true);
 }
 
+//返回棋子所在列
 int Stone::getColumn()
 {
     return column;
 }
 
+//设置棋子所在列
 void Stone::setColumn(int Y)
 {
     column = Y;
 }
 
+//移动棋子
 void Stone::move_to(int X, int Y)
 {
 
@@ -144,6 +158,7 @@ void Stone::move_to(int X, int Y)
     setColumn(Y);
 }
 
+//确认棋子位置
 bool Stone::check_pos(int X, int Y)
 {
     if (X < 0 || X >= 10)
@@ -171,7 +186,7 @@ void Stone::set_move(int X, int Y)
 }
 
 
-
+//棋子行棋规则
 void Stone::build_move()
 {
     for (int i = 0;i <= 10;++i)
@@ -181,8 +196,11 @@ void Stone::build_move()
     {
         return;
     }
+    
+    //兵的行棋规则
     if (type == BING)
     {
+        //黑方
         if (side == BLACK)
         {
             //过河后可以向前、左、右走
@@ -202,6 +220,7 @@ void Stone::build_move()
                     Stone::set_move(row + 1, column);
             }
         }
+        //红方
         else
         {
             if (over_river)
@@ -220,6 +239,8 @@ void Stone::build_move()
             }
         }
     }
+    
+    //炮的行棋规则
     if (type == PAO)
     {
         for (int i = row + 1;check_pos(i, column);++i)
@@ -241,6 +262,7 @@ void Stone::build_move()
                 break;
             }
         }
+        
         for (int i = row - 1;check_pos(i, column);--i)
         {
             if (!board[i][column])
@@ -276,6 +298,7 @@ void Stone::build_move()
                 break;
             }
         }
+        
         for (int i = column - 1;check_pos(row, i);--i)
         {
             if (!board[row][i])
@@ -294,6 +317,8 @@ void Stone::build_move()
             }
         }
     }
+    
+    //车的行棋规则
     if (type == JU)
     {
         for (int i = row + 1;check_pos(i, column);++i)
@@ -308,6 +333,7 @@ void Stone::build_move()
                 break;
             }
         }
+        
         for (int i = row - 1;check_pos(i, column);--i)
         {
             if (!board[i][column])
@@ -329,6 +355,7 @@ void Stone::build_move()
                 break;
             }
         }
+        
         for (int i = column - 1;check_pos(row, i);--i)
         {
             if (!board[row][i])
@@ -340,121 +367,199 @@ void Stone::build_move()
             }
         }
     }
+    
+    //马的行棋规则
     if (type == MA)
     {
         //日字形移动
-        if (check_pos(row + 1, column + 2))
-            if (!board[row][column + 1])//
+        if (check_pos(row + 1, column + 2)){
+            if (!board[row][column + 1]){
                 set_move(row + 1, column + 2);
-        if (check_pos(row + 1, column - 2))
-            if (!board[row][column - 1])
+            }
+        }
+        
+        if (check_pos(row + 1, column - 2)){
+            if (!board[row][column - 1]){
                 set_move(row + 1, column - 2);
+            }
+        }
 
-        if (check_pos(row - 1, column + 2))
-            if (!board[row][column + 1])
+        if (check_pos(row - 1, column + 2)){
+            if (!board[row][column + 1]){
                 set_move(row - 1, column + 2);
-        if (check_pos(row - 1, column - 2))
-            if (!board[row][column - 1])
+            }
+        }
+        
+        if (check_pos(row - 1, column - 2)){
+            if (!board[row][column - 1]){
                 set_move(row - 1, column - 2);
+            }
+        }
 
-        if (check_pos(row + 2, column + 1))
-            if (!board[row + 1][column])
+        if (check_pos(row + 2, column + 1)){
+            if (!board[row + 1][column]){
                 set_move(row + 2, column + 1);
-        if (check_pos(row + 2, column - 1))
-            if (!board[row + 1][column])
+            }
+        }
+        
+        if (check_pos(row + 2, column - 1)){
+            if (!board[row + 1][column]){
                 set_move(row + 2, column - 1);
+            }
+        }
 
-        if (check_pos(row - 2, column + 1))
-            if (!board[row - 1][column])
+        if (check_pos(row - 2, column + 1)){
+            if (!board[row - 1][column]){
                 set_move(row - 2, column + 1);
-        if (check_pos(row - 2, column - 1))
-            if (!board[row - 1][column])
+            }
+        }
+        
+        if (check_pos(row - 2, column - 1)){
+            if (!board[row - 1][column]){
                 set_move(row - 2, column - 1);
+            }
+        }
     }
+    
+    //相的行棋规则
     if (type == XIANG)
     {
         //田字形 且不能过河
         if (side == BLACK)
         {
-            if (check_pos(row + 2, column + 2) && row + 2 < 5)
-                if (!board[row + 1][column + 1])
+            if (check_pos(row + 2, column + 2) && row + 2 < 5){
+                if (!board[row + 1][column + 1]){
                     set_move(row + 2, column + 2);
-            if (check_pos(row + 2, column - 2) && row + 2 < 5)
-                if (!board[row + 1][column - 1])
+                }
+            }
+            
+            if (check_pos(row + 2, column - 2) && row + 2 < 5){
+                if (!board[row + 1][column - 1]){
                     set_move(row + 2, column - 2);
-            if (check_pos(row - 2, column + 2) && row - 2 < 5)
-                if (!board[row - 1][column + 1])
+                }
+            }
+            
+            if (check_pos(row - 2, column + 2) && row - 2 < 5){
+                if (!board[row - 1][column + 1]){
                     set_move(row - 2, column + 2);
-            if (check_pos(row - 2, column - 2) && row - 2 < 5)
-                if (!board[row - 1][column - 1])
+                }
+            }
+            
+            if (check_pos(row - 2, column - 2) && row - 2 < 5){
+                if (!board[row - 1][column - 1]){
                     set_move(row - 2, column - 2);
+                }
+            }
         }
         else
         {
-            if (check_pos(row + 2, column + 2) && row + 2 >= 5)
-                if (!board[row + 1][column + 1])
+            if (check_pos(row + 2, column + 2) && row + 2 >= 5){
+                if (!board[row + 1][column + 1]){
                     set_move(row + 2, column + 2);
-            if (check_pos(row + 2, column - 2) && row + 2 >= 5)
-                if (!board[row + 1][column - 1])
+                }
+            }
+            
+            if (check_pos(row + 2, column - 2) && row + 2 >= 5){
+                if (!board[row + 1][column - 1]){
                     set_move(row + 2, column - 2);
-            if (check_pos(row - 2, column + 2) && row - 2 >= 5)
-                if (!board[row - 1][column + 1])
+                }
+            }
+            
+            if (check_pos(row - 2, column + 2) && row - 2 >= 5){
+                if (!board[row - 1][column + 1]){
                     set_move(row - 2, column + 2);
-            if (check_pos(row - 2, column - 2) && row - 2 >= 5)
-                if (!board[row - 1][column - 1])
+                }
+            }
+            
+            if (check_pos(row - 2, column - 2) && row - 2 >= 5){
+                if (!board[row - 1][column - 1]){
                     set_move(row - 2, column - 2);
+                }
+            }
         }
     }
+    
+    //士的行棋规则
     if (type == SHI)
     {
         //对角线 不能超出九宫格
         if (side == BLACK)
         {
-            if (check_pos(row + 1, column + 1) && row + 1 < 3 && column + 1 < 6)
+            if (check_pos(row + 1, column + 1) && row + 1 < 3 && column + 1 < 6){
                 set_move(row + 1, column + 1);
-            if (check_pos(row + 1, column - 1) && row + 1 < 3 && column - 1 >= 3)
+            }
+            
+            if (check_pos(row + 1, column - 1) && row + 1 < 3 && column - 1 >= 3){
                 set_move(row + 1, column - 1);
-            if (check_pos(row - 1, column + 1) && column + 1 < 6)
+            }
+            
+            if (check_pos(row - 1, column + 1) && column + 1 < 6){
                 set_move(row - 1, column + 1);
-            if (check_pos(row - 1, column - 1) && column - 1 >= 3)
+            }
+            
+            if (check_pos(row - 1, column - 1) && column - 1 >= 3){
                 set_move(row - 1, column - 1);
+            }
         }
         else
         {
-            if (check_pos(row + 1, column + 1) && column + 1 < 6)
+            if (check_pos(row + 1, column + 1) && column + 1 < 6){
                 set_move(row + 1, column + 1);
-            if (check_pos(row + 1, column - 1) && column - 1 >= 3)
+            }
+            
+            if (check_pos(row + 1, column - 1) && column - 1 >= 3){
                 set_move(row + 1, column - 1);
-            if (check_pos(row - 1, column + 1) && row - 1 >= 7 && column + 1 < 6)
+            }
+            
+            if (check_pos(row - 1, column + 1) && row - 1 >= 7 && column + 1 < 6){
                 set_move(row - 1, column + 1);
-            if (check_pos(row - 1, column - 1) && row - 1 >= 7 && column - 1 >= 3)
+            }
+            
+            if (check_pos(row - 1, column - 1) && row - 1 >= 7 && column - 1 >= 3){
                 set_move(row - 1, column - 1);
+            }
         }
     }
+    
+    //将的行棋规则
     if (type == JIANG)
     {
         //一步一格 不能超出九宫格
         if (side == BLACK)
         {
-            if (check_pos(row + 1, column) && row + 1 < 3)
+            if (check_pos(row + 1, column) && row + 1 < 3){
                 set_move(row + 1, column);
-            if (check_pos(row - 1, column) && row - 1 < 3)
+            }
+            
+            if (check_pos(row - 1, column) && row - 1 < 3){
                 set_move(row - 1, column);
-            if (check_pos(row, column + 1) && column + 1 < 6)
+            }
+            
+            if (check_pos(row, column + 1) && column + 1 < 6){
                 set_move(row, column + 1);
-            if (check_pos(row, column - 1) && column - 1 >= 3)
+            }
+            
+            if (check_pos(row, column - 1) && column - 1 >= 3){
                 set_move(row, column - 1);
+            }
         }
         else
         {
-            if (check_pos(row + 1, column) && row + 1 >= 7)
+            if (check_pos(row + 1, column) && row + 1 >= 7){
                 set_move(row + 1, column);
-            if (check_pos(row - 1, column) && row - 1 >= 7)
+            }
+            
+            if (check_pos(row - 1, column) && row - 1 >= 7){
                 set_move(row - 1, column);
-            if (check_pos(row, column + 1) && column + 1 < 6)
+            }
+            
+            if (check_pos(row, column + 1) && column + 1 < 6){
                 set_move(row, column + 1);
-            if (check_pos(row, column - 1) && column - 1 >= 3)
+            }
+            
+            if (check_pos(row, column - 1) && column - 1 >= 3){
                 set_move(row, column - 1);
+            }
         }
     }
 }
