@@ -1,7 +1,9 @@
 #include "stone.h"
 
-int board[15][15];//全局共用棋盘,默认color为0的row从1-5，color为1的row在6-10
-int last_board[15][15];//全局共用历史上一棋盘
+//全局共用棋盘,默认color为0的row从1-5，color为1的row在6-10
+int board[15][15];
+//全局共用历史上一棋盘
+int last_board[15][15];
 
 Stone::Stone()
 {
@@ -187,6 +189,13 @@ void Stone::set_move(int X, int Y)
         move[X][Y] = 2;
 }
 
+//悔棋功能
+void Stone::reset_move()
+{
+    for(int i=0;i<15;++i)
+        for(int j=0;j<15;++j)
+            board[i][j]=last_board[i][j];
+}
 
 //棋子行棋规则
 void Stone::build_move()
