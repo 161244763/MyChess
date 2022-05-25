@@ -6,10 +6,21 @@
 Board::Board(QWidget *parent)
     : QWidget{parent}
 {
+    // 设置棋子
     for(int i = 0;i<32;i++)
     {
         stones[i] = new Stone(i);
     }
+
+    //设置按钮信息
+    btRevert.setParent(this);         //指定父对象
+    btRevert.setText("悔   棋");      //给按钮设置内容
+    btRestart.setParent(this);       //指定父对象
+    btRestart.setText("重启游戏");    //给按钮设置内容
+
+    // 定义信号
+    connect(&btRevert,&QPushButton::pressed,this,&Board::On_ButtonClick_btRevert);
+    connect(&btRestart,&QPushButton::pressed,this,&Board::On_ButtonClick_btRestart);
 }
 
 Board::~Board()
@@ -31,7 +42,7 @@ void Board::paintEvent(QPaintEvent *event)
     //棋盘图片长宽比
     bScale = bHeight / bWidth;
     //距左上角距离
-    left = 30,top = 30;
+    left = 30,top = 20;
     if(wScale>bScale){
         bWidth = wWidth - 60;
         bHeight = bWidth * bScale;
@@ -50,6 +61,17 @@ void Board::paintEvent(QPaintEvent *event)
     
     p.drawPixmap(left, top, bWidth, bHeight, boardImg);
     drawStone(p);
+
+    // 设置按钮高度
+    btTop = top + bHeight + 5;
+
+    // 设置悔棋按钮位置
+    btLeft = left + bWidth/2 - btRevert.width() - 10;
+    btRevert.move(btLeft, btTop);
+
+    // 设置重启游戏按钮位置
+    btLeft = btLeft + btRevert.width() + 10;
+    btRestart.move(btLeft, btTop);
 }
 
 void Board::drawStone(QPainter& p)
@@ -119,7 +141,7 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
     int row;
     int col;
     bool bRet = getClickRowCol(pt, row, col);
-    qDebug()<<row<<" "<<col;
+    //qDebug()<<row<<" "<<col;
     if(bRet == false)//棋盘外
     {
         return;
@@ -129,11 +151,15 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
         //选中某个没被吃掉的棋子 则将其ID设为clickedID
         if(stones[i]->getRow() == row && stones[i]->getColumn() == col && !stones[i]->getDead())
         {
-            qDebug()<<i;
+            // 记录棋子移动前的位置
+            pre_row = row;
+            pre_col = col;
+
+            //qDebug()<<i;
             break;
         }
     }
-    qDebug()<<i;
+    // qDebug()<<i;
     {
         if(i < 32)
         {
@@ -205,10 +231,11 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
 
 void Board::saveStep()
 {
-    if(last_row != -1)
+    //  在没有吃子的情况下悔棋
+    if(pre_row != -1)
     {
         stones[last_selectedID]->reset_move();
-        stones[last_selectedID]->move_to(last_row,last_col);
+        stones[last_selectedID]->move_to(pre_row,pre_col);
         if(last_clickedID != -1)
         {
             stones[last_clickedID]->setDead(false);
@@ -216,8 +243,8 @@ void Board::saveStep()
         }
         set_redTurn();
         last_selectedID = -1;
-        last_col =-1;
-        last_row = -1;
+        pre_col = -1;
+        pre_row = -1;
         update();
         return;
     }
@@ -225,6 +252,10 @@ void Board::saveStep()
     {
         return;
     }
+
+    // 在有吃子的情况下悔棋（待补充）
+    // 这个逻辑上稍微有些复杂
+
 }
 
 void Board::resetBoard()
@@ -235,12 +266,19 @@ void Board::resetBoard()
     last_col =-1;
     last_row = -1;
 
+    // 重置棋盘
     stones[0]->reset_board();
-
     for(int i = 0;i<32;i++)
     {
         stones[i] = new Stone(i);
     }
+    update();
+
+    // 重置红方先手（待补充）
+    _redTurn = true;
+
+#if 0
+    // 下面这种写法违反QT绘图机制，实际运行会出错。
     for(int i=0;i<32;i++)
     {
         //棋子没有死亡时进行绘制
@@ -262,5 +300,18 @@ void Board::resetBoard()
         //            qDebug()<<sLeft;
         //            qDebug()<<sTop;
     }
+#endif
+}
+
+// 悔棋按钮
+void Board::On_ButtonClick_btRevert()
+{
+    saveStep();
+}
+
+// 重启游戏按钮
+void Board::On_ButtonClick_btRestart()
+{
+    resetBoard();
 }
 
