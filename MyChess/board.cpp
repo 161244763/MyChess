@@ -166,6 +166,9 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
         {
             stones[_selectedID]->move_to(row,col);
             update();
+            last_row = row;
+            last_col = col;
+            last_selectedID = _selectedID;
             _selectedID = -1;
             set_redTurn();
         }
@@ -178,9 +181,13 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
             if(_clickedID != -1)
             {
                 stones[_clickedID]->setDead(true);
+                last_clickedID = _clickedID;
             }
             update();
-            
+
+            last_row = row;
+            last_col = col;
+            last_selectedID = _selectedID;
             _selectedID = -1;
             set_redTurn();
         }
@@ -195,4 +202,28 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
     }
 }
 
+void Board::saveStep()
+{
+    if(last_row != -1)
+    {
+        stones[last_selectedID]->setRow(last_row);
+        stones[last_selectedID]->setColumn(last_col);
+        if(last_clickedID != -1)
+        {
+            stones[last_clickedID]->setDead(false);
+            last_clickedID = -1;
+        }
+        set_redTurn();
+        stones[last_selectedID]->reset_move();
+        last_selectedID = -1;
+        last_col =-1;
+        last_row = -1;
+        update();
+        return;
+    }
+    else
+    {
+        return;
+    }
+}
 
