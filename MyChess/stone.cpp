@@ -168,6 +168,7 @@ bool Stone::check_pos(int X, int Y)
     return true;
 }
 
+//返回棋子移动的位置
 int Stone::get_move(int X, int Y)
 {
     if (!Stone::check_pos(X, Y))
@@ -175,6 +176,7 @@ int Stone::get_move(int X, int Y)
     return move[X][Y];
 }
 
+//设置棋子的移动位置
 void Stone::set_move(int X, int Y)
 {
     //当前格子没有棋子
@@ -206,18 +208,24 @@ void Stone::build_move()
             //过河后可以向前、左、右走
             if(over_river)
             {
-                if (Stone::check_pos(row + 1, column))
+                if (Stone::check_pos(row + 1, column)){
                     Stone::set_move(row + 1, column);
-                if (Stone::check_pos(row, column + 1))
+                }
+                
+                if (Stone::check_pos(row, column + 1)){
                     Stone::set_move(row, column + 1);
-                if (Stone::check_pos(row, column - 1))
+                }
+                
+                if (Stone::check_pos(row, column - 1)){
                     Stone::set_move(row, column - 1);
+                }
             }
             //过河前只能向前走
             else
             {
-                if (Stone::check_pos(row + 1, column))
+                if (Stone::check_pos(row + 1, column)){
                     Stone::set_move(row + 1, column);
+                }
             }
         }
         //红方
@@ -225,17 +233,23 @@ void Stone::build_move()
         {
             if (over_river)
             {
-                if (Stone::check_pos(row - 1, column))
+                if (Stone::check_pos(row - 1, column)){
                     Stone::set_move(row - 1, column);
-                if (Stone::check_pos(row, column + 1))
+                }
+                
+                if (Stone::check_pos(row, column + 1)){
                     Stone::set_move(row, column + 1);
-                if (Stone::check_pos(row, column - 1))
+                }
+                
+                if (Stone::check_pos(row, column - 1)){
                     Stone::set_move(row, column - 1);
+                }
             }
             else
             {
-                if (Stone::check_pos(row -1, column))
+                if (Stone::check_pos(row -1, column)){
                     Stone::set_move(row -1, column);
+                }
             }
         }
     }
@@ -246,8 +260,9 @@ void Stone::build_move()
         for (int i = row + 1;check_pos(i, column);++i)
         {
             //前方没有棋子 炮只能走 不能吃
-            if (!board[i][column])
+            if (!board[i][column]){
                 set_move(i, column);
+            }
             //前方有棋子 炮只能吃 不能走
             else
             {
@@ -265,8 +280,9 @@ void Stone::build_move()
         
         for (int i = row - 1;check_pos(i, column);--i)
         {
-            if (!board[i][column])
+            if (!board[i][column]){
                 set_move(i, column);
+            }
             else
             {
                 for (int j = i - 1;check_pos(j, column);--j)
@@ -283,8 +299,9 @@ void Stone::build_move()
 
         for (int i = column + 1;check_pos(row, i);++i)
         {
-            if (!board[row][i])
+            if (!board[row][i]){
                 set_move(row, i);
+            }
             else
             {
                 for (int j = i + 1;check_pos(row, j);++j)
@@ -301,8 +318,9 @@ void Stone::build_move()
         
         for (int i = column - 1;check_pos(row, i);--i)
         {
-            if (!board[row][i])
+            if (!board[row][i]){
                 set_move(row, i);
+            }
             else
             {
                 for (int j = i - 1;check_pos(row, j);--j)
@@ -324,8 +342,9 @@ void Stone::build_move()
         for (int i = row + 1;check_pos(i, column);++i)
         {
             //没有遇到棋子可以直走
-            if (!board[i][column])
+            if (!board[i][column]){
                 set_move(i, column);
+            }
             //遇到棋子 该棋子可以吃 经过该棋子后的各自不能走
             else
             {
@@ -336,8 +355,9 @@ void Stone::build_move()
         
         for (int i = row - 1;check_pos(i, column);--i)
         {
-            if (!board[i][column])
+            if (!board[i][column]){
                 set_move(i, column);
+            }
             else
             {
                 set_move(i, column);
@@ -347,8 +367,9 @@ void Stone::build_move()
 
         for (int i = column + 1;check_pos(row, i);++i)
         {
-            if (!board[row][i])
+            if (!board[row][i]){
                 set_move(row, i);
+            }
             else
             {
                 set_move(row, i);
@@ -358,8 +379,9 @@ void Stone::build_move()
         
         for (int i = column - 1;check_pos(row, i);--i)
         {
-            if (!board[row][i])
+            if (!board[row][i]){
                 set_move(row, i);
+            }
             else
             {
                 set_move(row, i);
