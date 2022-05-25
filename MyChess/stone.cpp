@@ -204,7 +204,6 @@ void Stone::set_move(int X, int Y)
         move[X][Y] = 2;
 }
 
-
 //棋子行棋规则
 void Stone::build_move()
 {
