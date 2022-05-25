@@ -32,7 +32,10 @@ public:
 
     int getColumn();
     void setColumn(int Y);
-
+    
+    //悔棋
+    void reset_move();
+    
     //移动棋子位置
     void move_to(int X, int Y);
 
@@ -41,6 +44,7 @@ public:
 
     //确定棋盘上的某位置是否可以行棋
     int get_move(int X, int Y) ;
+    
     //改变棋盘上可行棋的位置
     void set_move(int X, int Y);
 
@@ -59,7 +63,8 @@ private:
     bool over_river;
     int row;
     int column;
-    int move[15][15];//当前棋子可访问位置，0为不可移动,1为可移动，2为可吃
+    //当前棋子可访问位置，0为不可移动,1为可移动，2为可吃
+    int move[15][15];
 };
 
 #endif // STONE_H
