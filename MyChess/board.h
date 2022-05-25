@@ -36,6 +36,19 @@ public:
     void mouseReleaseEvent(QMouseEvent *);
 
 private:
+    //上一步棋盘点击位置
+    int last_row = -1;
+    int last_col = -1;
+
+    //储存棋盘上棋子对象
+    Stone* stones[32];
+
+    //上一步被选中的棋子
+    int last_selectedID = -1;
+
+    //上一步被吃掉的棋子
+    int last_clickedID = -1;
+    
     //储存棋盘上棋子对象
     Stone* stones[32];
 
