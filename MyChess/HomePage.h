@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include "board.h"
 
+//绘制主菜单
 class HomePage : public QWidget
 {
     Q_OBJECT
