@@ -206,6 +206,7 @@ void Board::saveStep()
 {
     if(last_row != -1)
     {
+        stones[last_selectedID]->reset_move();
         stones[last_selectedID]->setRow(last_row);
         stones[last_selectedID]->setColumn(last_col);
         if(last_clickedID != -1)
@@ -214,7 +215,6 @@ void Board::saveStep()
             last_clickedID = -1;
         }
         set_redTurn();
-        stones[last_selectedID]->reset_move();
         last_selectedID = -1;
         last_col =-1;
         last_row = -1;
