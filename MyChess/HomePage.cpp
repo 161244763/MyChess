@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QFile>
 
+//绘制主菜单
 HomePage::HomePage(QWidget *parent)
     : QWidget{parent}
 {
