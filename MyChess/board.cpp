@@ -202,13 +202,13 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
     }
 }
 
+
 void Board::saveStep()
 {
     if(last_row != -1)
     {
         stones[last_selectedID]->reset_move();
-        stones[last_selectedID]->setRow(last_row);
-        stones[last_selectedID]->setColumn(last_col);
+        stones[last_selectedID]->move_to(last_row,last_col);
         if(last_clickedID != -1)
         {
             stones[last_clickedID]->setDead(false);
@@ -224,6 +224,43 @@ void Board::saveStep()
     else
     {
         return;
+    }
+}
+
+void Board::resetBoard()
+{
+    QPainter p(this);
+
+    last_selectedID = -1;
+    last_col =-1;
+    last_row = -1;
+
+    stones[0]->reset_board();
+
+    for(int i = 0;i<32;i++)
+    {
+        stones[i] = new Stone(i);
+    }
+    for(int i=0;i<32;i++)
+    {
+        //棋子没有死亡时进行绘制
+        if(!stones[i]->getDead())
+        {
+            float sLeft = left + gbHeight  + gHeight * stones[i]->getColumn();
+            float sTop =  top + gbWidth + gHeight * stones[i]->getRow();
+            //区分选中和未被选中的棋子
+            if(i == _selectedID)
+            {
+                p.drawPixmap(sLeft-30, sTop-30, 70 , 70 , QPixmap(stones[i]->getFilePath()));
+            }
+            else
+            {
+                p.drawPixmap(sLeft-30, sTop-30, 60 , 60 , QPixmap(stones[i]->getFilePath()));
+            }
+        }
+
+        //            qDebug()<<sLeft;
+        //            qDebug()<<sTop;
     }
 }
 
