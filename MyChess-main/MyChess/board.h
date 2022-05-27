@@ -65,9 +65,6 @@ private:
 
     //上一步被吃掉的棋子
     int last_clickedID = -1;
-    
-    //储存棋盘上棋子对象
-    // Stone* stones[32];
 
     //被鼠标选中（第一次鼠标事件）的棋子id
     int _selectedID = -1;

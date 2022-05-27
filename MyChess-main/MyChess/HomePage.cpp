@@ -1,6 +1,7 @@
 #include "HomePage.h"
 #include <QPainter>
 #include <QFile>
+#include <QMessageBox>
 
 //绘制主菜单
 HomePage::HomePage(QWidget *parent)
@@ -61,3 +62,16 @@ void HomePage::on_ButtonQuit_Click()
 {
 
 }
+
+void HomePage::closeEvent(QCloseEvent *event)
+{
+    //窗口关闭时询问是否退出
+    QMessageBox::StandardButton result=QMessageBox::question(this, "中国象棋", "确定要退出游戏吗？",
+                                                             QMessageBox::Yes | QMessageBox::No,
+                                                             QMessageBox::No);
+    if (result==QMessageBox::Yes)
+        event->accept();
+    else
+        event->ignore();
+}
+

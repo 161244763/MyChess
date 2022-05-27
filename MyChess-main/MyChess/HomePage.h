@@ -16,6 +16,7 @@ public:
     void paintEvent(QPaintEvent *event);   // 绘制界面
     void on_ButtonStart_Click();           // 开始游戏
     void on_ButtonQuit_Click();            // 退出游戏
+    void closeEvent(QCloseEvent *event);
 
 private:
     QPushButton btStart;    // 开始游戏按钮

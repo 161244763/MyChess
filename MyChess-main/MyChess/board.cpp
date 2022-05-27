@@ -2,6 +2,8 @@
 #include <QPainter>
 #include <QFile>
 #include <QMouseEvent>
+#include <QMessageBox>
+
 
 Board::Board(QWidget *parent)
     : QWidget{parent}
@@ -207,6 +209,19 @@ void Board::mouseReleaseEvent(QMouseEvent *ev)
             if(_clickedID != -1)
             {
                 stones[_clickedID]->setDead(true);
+                if(stones[_clickedID]->getType()==0){
+                    QMessageBox msgBox;
+                    msgBox.setWindowTitle("中国象棋");
+                    msgBox.setText(stones[_clickedID]->getSide()?"恭喜红方胜利":"恭喜黑方胜利");
+                    QPushButton *restartBtn = msgBox.addButton(tr("重新开始"), QMessageBox::ActionRole);
+                    QPushButton *exitBtn = msgBox.addButton(tr("退出游戏"), QMessageBox::ActionRole);
+                    msgBox.exec();
+                    if (msgBox.clickedButton() == restartBtn) {
+                        resetBoard();
+                    } else if (msgBox.clickedButton() == exitBtn) {
+                        this->close();
+                    }
+                }
                 last_clickedID = _clickedID;
             }
             update();
@@ -275,8 +290,7 @@ void Board::resetBoard()
     update();
 
     // 重置红方先手（待补充）
-    _redTurn = true;
-
+    set_redTurn();
 #if 0
     // 下面这种写法违反QT绘图机制，实际运行会出错。
     for(int i=0;i<32;i++)
@@ -312,6 +326,10 @@ void Board::On_ButtonClick_btRevert()
 // 重启游戏按钮
 void Board::On_ButtonClick_btRestart()
 {
-    resetBoard();
+    QMessageBox::StandardButton result=QMessageBox::question(this, "中国象棋", "确定要重新开始吗？当前游戏数据将丢失",
+                                                             QMessageBox::Yes | QMessageBox::No,
+                                                             QMessageBox::No);
+    if (result==QMessageBox::Yes)
+        resetBoard();
 }
 
